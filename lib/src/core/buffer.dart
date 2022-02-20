@@ -13,7 +13,7 @@ class Buffer {
 
   final TermareController controller;
   // TODO 可空类型有问题
-  List<List<Character?>> cache = [];
+  List<List<Character?>?> cache = [];
   int _position = 0;
   int get position => _position;
   int? viewRows;
@@ -76,7 +76,7 @@ class Buffer {
     final int endRow = cache.length - 1;
     // print('cache.length -> ${cache.length}');
     for (int row = endRow; row > 0; row--) {
-      final List<Character?> line = cache[row];
+      final List<Character?>? line = cache[row];
       // 这个 line == null 不能删！！！，用非空模式运行这个库会出现问题的
       if (line == null || line.isEmpty) {
         continue;
@@ -129,10 +129,10 @@ class Buffer {
       // 有可能存在[null,null]，这个index能取到值，但是为null
       cache[row] = [];
     }
-    if (column > cache[row].length - 1) {
+    if (column > cache[row]!.length - 1) {
       // 防止在 column 上越界
       // Log.w(' 防止在 column 上越界');
-      cache[row].length = column + 1;
+      cache[row]!.length = column + 1;
     }
     if (fixedLine.containsKey(row - position)) {
       fixedLine[row - position]![column] = entity;
@@ -150,7 +150,7 @@ class Buffer {
         Log.i('写入固定行${row - position} 行内内容->$line');
       }
     } else {
-      cache[row][column] = entity;
+      cache[row]![column] = entity;
     }
     // printBuffer();
   }
@@ -194,7 +194,7 @@ class Buffer {
     if (row > cache.length - 1) {
       return true;
     }
-    final List<Character?> line = cache[row];
+    final List<Character?> line = cache[row]!;
     if (line == null || line.isEmpty) {
       return true;
     }
@@ -212,7 +212,7 @@ class Buffer {
     if (row > cache.length - 1) {
       return false;
     }
-    final List<Character?> line = cache[row];
+    final List<Character?> line = cache[row]!;
     // 有问题，非空模式运行的时候，可能还是会拿到空
     if (line == null || line.isEmpty) {
       return false;
@@ -241,7 +241,7 @@ class Buffer {
     if (cache[row + _position] == null) {
       cache[row + _position] = [];
     }
-    return cache[row + _position];
+    return cache[row + _position]!;
   }
 
   /// 通过改变position从而实现终端视图滚动

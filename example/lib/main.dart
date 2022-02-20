@@ -1,79 +1,60 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:termare_view/termare_view.dart';
 
-import 'home_page.dart';
+void main() => runApp(const MyApp());
 
-void main() {
-  for (int i = 0; i < 256; i++) {
-    print('\x1b[48;5;$i\m$i     \x1b[0m');
-  }
-  print('\x1b[2J');
-  runAppWithTool(
-    MaterialApp(
-      home: Example(),
-    ),
-  );
-  WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    systemNavigationBarColor: Colors.transparent,
-    systemNavigationBarDividerColor: Colors.transparent,
-  ));
-}
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-class Example extends StatefulWidget {
-  @override
-  _ExampleState createState() => _ExampleState();
-}
-
-class _ExampleState extends State<Example> {
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark,
-      child: Scaffold(
-        backgroundColor: Color(0xfff5f5f7),
-        resizeToAvoidBottomInset: true,
-        // body: SafeArea(
-        //   // width: 100,
-        //   // height: 100,
-        //   child: TermareView(
-        //     keyboardInput: (value) {
-        //       print('value${value.codeUnits}');
-        //       controller.enableAutoScroll();
-        //       controller.write(value);
-        //     },
-        //     controller: controller,
-        //   ),
-        // ),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: const HomePageMod(),
     );
   }
 }
 
-Iterable<LocalizationsDelegate<dynamic>> get _localizationsDelegates sync* {
-  yield DefaultMaterialLocalizations.delegate;
-  yield DefaultWidgetsLocalizations.delegate;
+class HomePageMod extends StatefulWidget {
+  const HomePageMod({Key? key}) : super(key: key);
+
+  @override
+  _HomePageModState createState() => _HomePageModState();
 }
 
-void runAppWithTool(Widget app) {
-  runApp(Directionality(
-    child: MediaQuery(
-      data: MediaQueryData.fromWindow(window),
-      child: Localizations(
-        locale: const Locale('en', 'US'),
-        delegates: _localizationsDelegates.toList(),
+class _HomePageModState extends State<HomePageMod> {
+TermareController termareController = TermareController(
+  showBackgroundLine: true,
+);
+
+@override
+Widget build(BuildContext context) {
+  return RawKeyboardListener(
+    focusNode: FocusNode(),
+    autofocus: true,
+    onKey: (key) {
+      print('->$key');
+    },
+    child: Visibility(
+      visible: true,
+      child: SafeArea(
         child: Stack(
           children: [
-            app,
-            HomePage(),
+            TermareView(
+              keyboardInput: (value) {
+                print('code value of keyboardInput is: ${value.codeUnits}');
+                termareController.enableAutoScroll();
+                termareController.write(value);
+              },
+              controller: termareController,
+            ),
           ],
         ),
       ),
     ),
-    textDirection: TextDirection.ltr,
-  ));
+  );
+}
 }

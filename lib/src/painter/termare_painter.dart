@@ -17,7 +17,7 @@ class TermarePainter extends CustomPainter {
     required this.controller,
   }) {
     offsetCache.length = controller.row;
-    // print('TermarePainter构造');
+    print('TermarePainter构造');
     termWidth = controller.column * controller.theme!.characterWidth!;
     termHeight = controller.row * controller.theme!.characterHeight!;
 
@@ -25,9 +25,9 @@ class TermarePainter extends CustomPainter {
       for (int column = 0; column < controller.column; column++) {
         if (offsetCache[row] == null) {
           offsetCache[row] = [];
-          offsetCache[row].length = controller.column;
+          offsetCache[row]!.length = controller.column;
         }
-        offsetCache[row][column] = Offset(
+        offsetCache[row]![column] = Offset(
           column * controller.theme!.characterWidth!,
           row * controller.theme!.characterHeight!,
         );
@@ -37,7 +37,7 @@ class TermarePainter extends CustomPainter {
     // Log.d('0 0 offset 为 ${offsetCache[0][0]}');
     // cacheOffset();
   }
-  List<List<Offset>> offsetCache = [];
+  List<List<Offset?>?> offsetCache = [];
 
   /// 终端控制器
   late final TermareController controller;
@@ -158,7 +158,7 @@ class TermarePainter extends CustomPainter {
         final bool isDoubleWidth = character.wcwidth == 2;
         // final double doubleWidthXOffset = isDoubleWidth ? 0 : 0;
         // final double doubleWidthYOffset = isDoubleWidth ? 0 : 0;
-        final Offset backOffset = offsetCache[row][column];
+        final Offset backOffset = offsetCache[row]![column]!;
 
         // log('get offset ${stopwatch.elapsed}');
         final Offset fontOffset = backOffset +
