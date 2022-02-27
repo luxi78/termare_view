@@ -15,6 +15,7 @@ abstract class InputListenerController {
 
 class InputListener extends StatefulWidget {
   const InputListener({
+    Key? key,
     required this.child,
     required this.onKeyStroke,
     required this.onTextInput,
@@ -28,7 +29,7 @@ class InputListener extends StatefulWidget {
       text: '  ',
       selection: TextSelection.collapsed(offset: 1),
     ),
-  });
+  }):super(key:key);
 
   final Widget child;
   final InputHandler onTextInput;

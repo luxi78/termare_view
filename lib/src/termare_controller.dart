@@ -20,6 +20,7 @@ import 'theme/term_theme.dart';
 import 'utils/character_width.dart';
 import 'utils/debouncer.dart';
 import 'utils/signale/signale.dart';
+import 'package:termare_view/src/widget/input_listener.dart';
 
 String red = '\x1b[1;31m';
 String pink = '\x1b[1;35m';
@@ -38,6 +39,7 @@ class TermareController with Observable {
     this.showBackgroundLine = false,
     this.fontFamily = 'packages/termare_view/DroidSansMono',
     this.terminalTitle,
+    this.inputKey = null,
   }) {
     enableTerminalLog = enableLog;
     theme ??= TermareStyles.vsCode;
@@ -45,6 +47,8 @@ class TermareController with Observable {
     _alternateBuffer = Buffer(this);
     currentBuffer = mainBuffer;
   }
+
+  GlobalKey<InputListenerState>? inputKey;
 
   /// 是否开启日志打印
   late final bool enableLog;

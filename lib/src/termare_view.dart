@@ -77,6 +77,7 @@ class _TermareViewState extends State<TermareView> {
   @override
   Widget build(BuildContext context) {
     return InputListener(
+      key: _controller.inputKey,
       focusNode: _focusNode,
       onTextInput: (TextEditingValue value) {
         // Log.i(value);
