@@ -17,7 +17,11 @@ class TermarePainter extends CustomPainter {
     required this.controller,
   }) {
     offsetCache.length = controller.row;
-    print('TermarePainter构造');
+
+    if (controller.enableLog) {
+      print('TermarePainter构造');
+    }
+
     termWidth = controller.column * controller.theme!.characterWidth!;
     termHeight = controller.row * controller.theme!.characterHeight!;
 
